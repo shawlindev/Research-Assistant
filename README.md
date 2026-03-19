@@ -1,6 +1,39 @@
 # research-idea-sindy
 
-An AI-assisted research tool. Add academic papers to NotebookLM, ask questions about them, and Claude writes structured notes and summaries into an Obsidian vault — automatically organized by topic and backed up to git.
+An AI-assisted research system. Add academic papers via NotebookLM (URLs, PDFs, or web research), ask questions, and Claude writes structured atomic notes into an Obsidian vault — organized into a navigable knowledge graph.
+
+---
+
+## Architecture
+
+**Workflows** — Markdown SOPs in `workflows/` describing how to handle papers, structure notes, and run sessions.
+
+**Agent** — Claude Code orchestrates sessions: loads papers into NotebookLM, queries them, synthesizes answers, writes structured notes into Obsidian.
+
+**Tools** — `tools/obsidian/` scripts for writing tracks, session notes, and managing state.
+
+### Knowledge structure
+
+```text
+obsidian/tracks/<topic>.md              # track (hub per research topic)
+obsidian/notes/<topic>/
+├── <cluster>.md                        # cluster (groups 3–7 related notes)
+└── <concept>.md                        # leaf note (one atomic concept)
+```
+
+- **Track** — one per research topic, links to 3–7 clusters
+- **Cluster** — groups related leaf notes (e.g., protocols, limitations, disease-models)
+- **Leaf note** — one concept per file, linked to its cluster via `up:` frontmatter
+
+Optimized for ExcaliBrain and Obsidian graph view: focused hubs, sparse cross-links, readable labels.
+
+### Source pathways
+
+Papers enter the system through NotebookLM via three pathways:
+
+1. **Open-access URL** — added directly (PubMed Central, bioRxiv, eLife, Frontiers)
+2. **Local PDF** — dropped into `papers/`, uploaded to NotebookLM, moved to `papers/processed/`
+3. **Web research** — NotebookLM discovers and imports sources for a topic query
 
 ---
 
@@ -65,6 +98,8 @@ mkdir -p ~/obsidian-brain/research-idea-sindy
 
 Open **Obsidian** → **Open folder as vault** → select `~/obsidian-brain/research-idea-sindy`.
 
+Recommended plugins: **Breadcrumbs** (navigation via `up:` frontmatter) and **ExcaliBrain** (visual mind maps from wiki-links).
+
 ### 5. Restart Claude Code
 
 Restart Claude Code to pick up the NotebookLM skill.
@@ -88,7 +123,7 @@ Start by telling Claude what you're working on:
 
 > "What are the open questions across everything I've read on climate modeling?"
 
-At the end of each session, Claude will automatically write a structured note to your Obsidian vault and back it up to git.
+At the end of each session, Claude writes structured notes to your Obsidian vault and updates the track status.
 
 ---
 
@@ -96,9 +131,10 @@ At the end of each session, Claude will automatically write a structured note to
 
 | Content | Location |
 |---|---|
-| Per-topic notes (tracks) | `~/obsidian-brain/research-idea-sindy/tracks/` |
+| Per-topic tracks and notes | `~/obsidian-brain/research-idea-sindy/` (Obsidian vault) |
 | Session summaries | `~/obsidian-brain/research-idea-sindy/sessions/` |
 | NotebookLM notebooks | Google's servers (via your account) |
 | Repo code and workflows | `~/Dev/projects/research-idea-sindy/` (this repo) |
+| Paper PDFs (temporary) | `papers/` (gitignored, moved to `papers/processed/` after import) |
 
-The Obsidian vault content is local-only and gitignored from the project repo. It backs up to a separate private repo (`obsidian-brain`) automatically on session close.
+The Obsidian vault is symlinked into the repo but gitignored. It backs up to a separate private repo (`obsidian-brain`) on session close.

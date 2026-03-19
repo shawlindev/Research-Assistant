@@ -93,10 +93,10 @@ notebooklm skill install
 Create the vault folder:
 
 ```bash
-mkdir -p ~/obsidian-brain/research-idea-sindy
+mkdir -p ~/obsidian-brain/Research-Assistant
 ```
 
-Open **Obsidian** → **Open folder as vault** → select `~/obsidian-brain/research-idea-sindy`.
+Open **Obsidian** → **Open folder as vault** → select `~/obsidian-brain/Research-Assistant`.
 
 Recommended plugins: **Breadcrumbs** (navigation via `up:` frontmatter) and **ExcaliBrain** (visual mind maps from wiki-links).
 
@@ -107,7 +107,7 @@ Restart Claude Code to pick up the NotebookLM skill.
 ### 6. Open a session
 
 ```bash
-cd ~/Dev/projects/research-idea-sindy
+cd ~/Dev/projects/Research-Assistant
 claude
 ```
 
@@ -131,10 +131,10 @@ At the end of each session, Claude writes structured notes to your Obsidian vaul
 
 | Content | Location |
 |---|---|
-| Per-topic tracks and notes | `~/obsidian-brain/research-idea-sindy/` (Obsidian vault) |
-| Session summaries | `~/obsidian-brain/research-idea-sindy/sessions/` |
+| Per-topic tracks and notes | `~/obsidian-brain/Research-Assistant/` (Obsidian vault) |
+| Session summaries | `~/obsidian-brain/Research-Assistant/sessions/` |
 | NotebookLM notebooks | Google's servers (via your account) |
-| Repo code and workflows | `~/Dev/projects/research-idea-sindy/` (this repo) |
+| Repo code and workflows | `~/Dev/projects/Research-Assistant/` (this repo) |
 | Paper PDFs (temporary) | `papers/` (gitignored, moved to `papers/processed/` after import) |
 
 The Obsidian vault is symlinked into the repo but gitignored. It backs up to a separate private repo (`obsidian-brain`) on session close.

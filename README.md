@@ -1,4 +1,4 @@
-# research-idea-sindy
+# Research-Assistant
 
 An AI-assisted research system. Add academic papers via NotebookLM (URLs, PDFs, or web research), ask questions, and Claude writes structured atomic notes into an Obsidian vault — organized into a navigable knowledge graph.
 
@@ -51,8 +51,8 @@ Papers enter the system through NotebookLM via three pathways:
 ### 1. Clone the repo
 
 ```bash
-git clone git@github.com:shawlindev/research-idea-sindy.git ~/Dev/projects/research-idea-sindy
-cd ~/Dev/projects/research-idea-sindy
+git clone git@github.com:shawlindev/Research-Assistant.git ~/Dev/projects/Research-Assistant
+cd ~/Dev/projects/Research-Assistant
 ```
 
 ### 2. Install Python 3.11 (if needed)

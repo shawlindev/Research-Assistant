@@ -1,12 +1,12 @@
 # Research Workflow
 
-How to use this system to process academic papers and build a structured knowledge base.
+How to use this system to research any topic and build a structured knowledge base.
 
 ---
 
 ## Core Loop
 
-For each paper or research session:
+For each research session:
 
 1. **Identify the topic** — which track does this belong to? Check `obsidian/tracks/` for existing ones.
 2. **Load sources into NotebookLM** — use the appropriate source pathway below.
@@ -18,65 +18,45 @@ For each paper or research session:
 
 ## Source Access
 
-Three pathways depending on how the paper is available. Try in this order:
+Three pathways for loading material into NotebookLM. Use whichever fits.
 
-### Pathway A — Open-access URL
+### Pathway A — URL
 
-Add directly. These sources work reliably:
-
-- PubMed Central (`pmc.ncbi.nlm.nih.gov`)
-- eLife (`elifesciences.org`)
-- bioRxiv / medRxiv (`biorxiv.org`, `medrxiv.org`)
-- Frontiers (`frontiersin.org`)
+Add any publicly accessible URL directly:
 
 ```bash
-notebooklm source add "https://pmc.ncbi.nlm.nih.gov/articles/..."
+notebooklm source add "https://..."
 ```
 
-### Pathway B — Paywalled URL
+Works with articles, documentation, blog posts, reports, or any page with readable content.
 
-Do not attempt to access the content. Ask the user:
+### Pathway B — Web research
 
-> "This source is behind a paywall. Please provide either your institution credentials or download the PDF directly and drop it in the `papers/` folder."
-
-Once the user provides a file, proceed to Pathway C.
-
-### Pathway C — Local PDF (`papers/` folder)
-
-User drops the PDF into `papers/` at the project root. Then:
-
-1. List `papers/` to discover new files
-2. Add each file to NotebookLM — do **not** read the file contents yourself
-
-```bash
-notebooklm source add ./papers/paper.pdf
-```
-
-Move to `papers/processed/` after successful import to avoid re-adding:
-
-```bash
-mv papers/paper.pdf papers/processed/paper.pdf
-```
-
-NotebookLM handles all extraction and synthesis. The agent's only job is to upload the file.
-
-### Fallback — Web research
-
-When no specific paper is provided and source discovery is needed:
+When you need to discover sources on a topic (most common pathway):
 
 ```bash
 notebooklm source add-research "topic query"
 ```
 
-Use `--mode deep` for broader coverage (slower). Use fast mode (default) for a specific topic.
+Use `--mode deep` for broader coverage (slower). Default (fast) mode works for focused queries.
+
+### Pathway C — Local file
+
+For files already on disk (PDFs, text files, etc.):
+
+```bash
+notebooklm source add ./path/to/file.pdf
+```
+
+NotebookLM handles all extraction. The agent's only job is to upload the file.
 
 ---
 
 ## NotebookLM Notebooks
 
-- **One notebook per topic** (e.g., `[RESEARCH] Transformer Architectures`, `[RESEARCH] Climate Models`)
-- Add multiple papers to the same notebook when they share a topic — NotebookLM synthesizes across them
-- Sources can be PDFs, URLs, or web research results
+- **One notebook per topic** (e.g., `[RESEARCH] Instagram Boosting`, `[RESEARCH] RAG`)
+- Add multiple sources to the same notebook when they share a topic — NotebookLM synthesizes across them
+- Sources can be URLs, web research results, or local files
 
 ```bash
 # Create notebook
@@ -84,39 +64,39 @@ notebooklm create "[RESEARCH] <topic>"
 
 # Add sources
 notebooklm source add "https://..."          # open-access URL
-notebooklm source add ./papers/paper.pdf     # local PDF
+notebooklm source add ./path/to/file.pdf     # local file
 
 # Web research (source discovery)
 notebooklm source add-research "query"
 
 # Query
-notebooklm ask "What is the main contribution of this paper?"
+notebooklm ask "What are the key insights from these sources?"
 ```
 
 ---
 
 ## Question Templates
 
-Good starting questions for any new paper:
+Good starting questions for any new topic:
 
-- What problem does this paper solve?
-- What is the proposed method or approach?
-- What are the key results and metrics?
-- What are the limitations acknowledged by the authors?
-- How does this compare to prior work?
-- What are the most relevant citations?
+- What is the core concept or approach here?
+- What are the key takeaways or actionable insights?
+- What are the trade-offs or limitations?
+- How does this compare to alternatives?
+- What would I need to implement or apply this?
+- What are the open questions or unresolved debates?
 
 ---
 
 ## Track Naming
 
-One track per research topic, not per paper. Papers are sources; tracks are knowledge.
+One track per research topic. Sources are inputs; tracks are knowledge.
 
 ```text
 obsidian/tracks/
-├── attention-mechanisms.md
-├── climate-modeling.md
-└── protein-folding.md
+├── instagram-boosting.md
+├── rag.md
+└── ffn-contributor-pipeline.md
 ```
 
 Use lowercase, hyphenated names. Create a new track when starting a genuinely new topic.
@@ -140,14 +120,14 @@ obsidian/notes/<topic>/
 ```
 
 - **Track** links to 3–7 clusters in `## Notes`. Never links directly to leaf notes.
-- **Cluster** groups related leaf notes (e.g., protocols, limitations, disease-models). `up:` points to the track.
+- **Cluster** groups related leaf notes (e.g., strategies, trade-offs, implementation-steps). `up:` points to the track.
 - **Leaf note** is one atomic concept. `up:` points to its cluster, not the track.
 
 When a cluster grows past 7 notes, split it — that signals a natural sub-topic boundary.
 
 **Rules:**
 
-- One concept per file — protocols, mechanisms, limitations, models, findings each get their own note
+- One concept per file — strategies, trade-offs, limitations, tools, findings each get their own note
 - Use `[[wiki-links]]` in note bodies to connect related notes — these become lateral edges in the graph
 - Keep cross-links sparse and meaningful; only link when there is a real relationship
 - Add `aliases:` when the filename is awkward as a graph label (acronyms, apostrophes)
@@ -170,7 +150,7 @@ tags: [tag1, tag2]
 ```yaml
 ---
 up: "[[<cluster>]]"
-type: finding  # or: protocol, limitation, model, mechanism
+type: finding  # or: strategy, trade-off, limitation, tool, comparison
 tags: [tag1, tag2]
 ---
 ```
@@ -183,11 +163,11 @@ When writing typed observations to the track's `## Observations` section:
 
 | Tag            | When to use                                                 |
 | -------------- | ----------------------------------------------------------- |
-| `[finding]`    | Empirical result, metric, or conclusion from a paper        |
+| `[finding]`    | Key result, metric, or conclusion from sources              |
 | `[decision]`   | Choice made about how to organize or interpret the research |
-| `[constraint]` | Limitation noted in the paper or the research area          |
+| `[constraint]` | Limitation or hard constraint relevant to the topic         |
 | `[issue]`      | Open question or contradiction between sources              |
-| `[next]`       | Follow-up paper to read or question to investigate          |
+| `[next]`       | Follow-up to research or question to investigate            |
 
 ---
 

@@ -1,14 +1,14 @@
 # Research-Assistant
 
-An AI-assisted research system. Add academic papers via NotebookLM (URLs, PDFs, or web research), ask questions, and Claude writes structured atomic notes into an Obsidian vault — organized into a navigable knowledge graph.
+An AI-assisted research system. Research any topic via NotebookLM (URLs, web research, or local files), ask questions, and Claude writes structured atomic notes into an Obsidian vault — organized into a navigable knowledge graph.
 
 ---
 
 ## Architecture
 
-**Workflows** — Markdown SOPs in `workflows/` describing how to handle papers, structure notes, and run sessions.
+**Workflows** — Markdown SOPs in `workflows/` describing how to run research sessions, load sources, and structure notes.
 
-**Agent** — Claude Code orchestrates sessions: loads papers into NotebookLM, queries them, synthesizes answers, writes structured notes into Obsidian.
+**Agent** — Claude Code orchestrates sessions: loads sources into NotebookLM, queries them, synthesizes answers, writes structured notes into Obsidian.
 
 **Tools** — `tools/obsidian/` scripts for writing tracks, session notes, and managing state.
 
@@ -22,18 +22,18 @@ obsidian/notes/<topic>/
 ```
 
 - **Track** — one per research topic, links to 3–7 clusters
-- **Cluster** — groups related leaf notes (e.g., protocols, limitations, disease-models)
+- **Cluster** — groups related leaf notes (e.g., strategies, trade-offs, implementation-steps)
 - **Leaf note** — one concept per file, linked to its cluster via `up:` frontmatter
 
 Optimized for ExcaliBrain and Obsidian graph view: focused hubs, sparse cross-links, readable labels.
 
 ### Source pathways
 
-Papers enter the system through NotebookLM via three pathways:
+Sources enter the system through NotebookLM via three pathways:
 
-1. **Open-access URL** — added directly (PubMed Central, bioRxiv, eLife, Frontiers)
-2. **Local PDF** — dropped into `papers/`, uploaded to NotebookLM, moved to `papers/processed/`
-3. **Web research** — NotebookLM discovers and imports sources for a topic query
+1. **URL** — any publicly accessible link (articles, docs, blog posts, reports)
+2. **Web research** — NotebookLM discovers and imports sources for a topic query
+3. **Local file** — any file on disk, uploaded directly to NotebookLM
 
 ---
 
@@ -117,11 +117,11 @@ claude
 
 Start by telling Claude what you're working on:
 
-> "I have a new paper on attention mechanisms — here's the PDF"
+> "I want to research Instagram boosting strategies"
 
-> "Summarize what the papers in my transformer notebook say about positional encoding"
+> "What do the sources in my RAG notebook say about reranking approaches?"
 
-> "What are the open questions across everything I've read on climate modeling?"
+> "What are the open questions across everything I've gathered on the FFN contributor pipeline?"
 
 At the end of each session, Claude writes structured notes to your Obsidian vault and updates the track status.
 
@@ -135,6 +135,5 @@ At the end of each session, Claude writes structured notes to your Obsidian vaul
 | Session summaries | `~/obsidian-brain/Research-Assistant/sessions/` |
 | NotebookLM notebooks | Google's servers (via your account) |
 | Repo code and workflows | `~/Dev/projects/Research-Assistant/` (this repo) |
-| Paper PDFs (temporary) | `papers/` (gitignored, moved to `papers/processed/` after import) |
 
 The Obsidian vault is symlinked into the repo but gitignored. It backs up to a separate private repo (`obsidian-brain`) on session close.

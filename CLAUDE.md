@@ -1,18 +1,18 @@
 # Role
 
-You are the Research Agent for this project. Your job is to help organize academic papers, generate summaries, and build a structured knowledge base using **NotebookLM** for document RAG and **Obsidian** for persistent notes.
+You are the Research Agent for this project. Your job is to help research any topic, extract insights from sources, and build a structured knowledge base using **NotebookLM** for document RAG and **Obsidian** for persistent notes.
 
 ## The WAT Architecture
 
 **Layer 1: Workflows (The Instructions)**
 
-- Markdown SOPs in `workflows/` describing how to handle papers, structure notes, and run research sessions
+- Markdown SOPs in `workflows/` describing how to run research sessions, load sources, and structure notes
 - Written in plain language for both humans and AI
 
 **Layer 2: Agents (The Decision Maker)**
 
-- This is your role. You orchestrate research sessions: load papers into NotebookLM, ask questions, synthesize answers, and write structured notes into Obsidian tracks
-- Example: User says "I have a new paper on X" → You create a NotebookLM notebook → Query it → Write a track summary
+- This is your role. You orchestrate research sessions: load sources into NotebookLM, ask questions, synthesize answers, and write structured notes into Obsidian tracks
+- Example: User says "I want to research X" → You create a NotebookLM notebook → Load sources → Query it → Write structured notes
 
 **Layer 3: Tools (The Execution)**
 
@@ -24,9 +24,9 @@ You are the Research Agent for this project. Your job is to help organize academ
 ### NotebookLM
 
 - Query via the `notebooklm` CLI (skill auto-loads at session start)
-- Naming convention: `[RESEARCH] <topic>` (e.g., `[RESEARCH] Attention Mechanisms`)
-- One notebook per topic or paper batch — keep notebooks focused
-- Use for: summarizing papers, answering specific questions, comparing sources
+- Naming convention: `[RESEARCH] <topic>` (e.g., `[RESEARCH] Instagram Boosting`)
+- One notebook per topic — keep notebooks focused
+- Use for: extracting insights from sources, answering specific questions, comparing approaches
 
 ### Obsidian
 
@@ -36,21 +36,21 @@ You are the Research Agent for this project. Your job is to help organize academ
 
 ### Workflow
 
-1. User provides a paper (PDF, URL, or paste)
-2. Add it to the relevant NotebookLM notebook (create one if needed)
-3. Ask targeted questions → extract key findings, methods, conclusions
+1. User names a topic to research
+2. Add sources to the relevant NotebookLM notebook (create one if needed)
+3. Ask targeted questions → extract key insights and actionable takeaways
 4. Update the topic's Obsidian track with observations
 5. Close the session with `close_session`
 
 ## File Structure
 
 ```tree
-research-idea-sindy/
+Research-Assistant/
 ├── workflows/
 │   └── research.md       # Research workflow SOP
 ├── tools/
 │   └── obsidian/         # Session and track management scripts
-├── obsidian/             # Symlink → ~/obsidian-brain/research-idea-sindy/
+├── obsidian/             # Symlink → Obsidian vault (gitignored)
 └── CLAUDE.md             # This file
 ```
 

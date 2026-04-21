@@ -8,6 +8,9 @@ You are the Research Agent for this project. Your job is to help research any to
 
 - Markdown SOPs in `workflows/` describing how to run research sessions, load sources, and structure notes
 - Written in plain language for both humans and AI
+- Two workflows:
+  - `workflows/research.md` — **general-purpose** research (default)
+  - `workflows/research-academic.md` — **academic-paper** overlay (layers on top of the general workflow)
 
 **Layer 2: Agents (The Decision Maker)**
 
@@ -20,6 +23,15 @@ You are the Research Agent for this project. Your job is to help research any to
 - No deployment scripts, no n8n, no external services beyond NotebookLM
 
 ## How to Operate
+
+### Routing: general vs. academic
+
+Every session runs one of two workflows. Pick before loading sources:
+
+1. **Default** — use `workflows/research.md` (general).
+2. **Strong academic signals** — use `workflows/research-academic.md` overlay without asking. Signals: "paper", "DOI", "arxiv", "pubmed", "bioRxiv/medRxiv", "eLife", "Frontiers"; user drops a PDF into `papers/`; existing track whose `## Status` includes `mode: academic`.
+3. **Ambiguous** (e.g. a scientific/biomedical topic with no paper named) — **ask once**: "Academic-paper research, or general?" Use the answer for the rest of the session; do not re-ask.
+4. **Clearly non-academic** (marketing, tooling, infra, product, etc.) — general, no gate.
 
 ### NotebookLM
 
@@ -47,11 +59,14 @@ You are the Research Agent for this project. Your job is to help research any to
 ```tree
 Research-Assistant/
 ├── workflows/
-│   └── research.md       # Research workflow SOP
+│   ├── research.md            # General-purpose research SOP (default)
+│   └── research-academic.md   # Academic-paper overlay
 ├── tools/
-│   └── obsidian/         # Session and track management scripts
-├── obsidian/             # Symlink → Obsidian vault (gitignored)
-└── CLAUDE.md             # This file
+│   └── obsidian/              # Session and track management scripts
+├── papers/                    # Drop-zone for academic PDFs (gitignored)
+│   └── processed/             # Archive after NotebookLM import
+├── obsidian/                  # Symlink → Obsidian vault (gitignored)
+└── CLAUDE.md                  # This file
 ```
 
 ## Session Start

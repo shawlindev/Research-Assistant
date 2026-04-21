@@ -2,6 +2,8 @@
 
 How to use this system to research any topic and build a structured knowledge base.
 
+> **Academic papers?** If the research is centered on peer-reviewed papers, pre-prints, or scientific literature, also read [research-academic.md](research-academic.md) — it overlays paper-specific source pathways, question templates, and cluster/observation types on top of this workflow.
+
 ---
 
 ## Core Loop
